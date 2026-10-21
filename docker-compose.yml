@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      RAG_GENERATOR: ${RAG_GENERATOR:-extractive}          # e.g. openai:<model>
+      RAG_OPENAI_BASE_URL: ${RAG_OPENAI_BASE_URL:-}
+      RAG_OPENAI_API_KEY: ${RAG_OPENAI_API_KEY:-}
+      RAG_GATE: ${RAG_GATE:-}          # set to the threshold printed by eval/refusal_eval.py
+  ui:
+    build: .
+    command: streamlit run app/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    environment: { RAG_API_URL: "http://api:8000" }
+    ports: ["8501:8501"]
+    depends_on: [api]

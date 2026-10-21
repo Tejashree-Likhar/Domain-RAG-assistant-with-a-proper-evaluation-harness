@@ -1,0 +1,13 @@
+.venv/
+venv/
+.vscode/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/
+artifacts/
+.hf/
+.llm_cache/
+.streamlit/secrets.toml
+eval/judge_labels.jsonl
+results/*.jsonl
