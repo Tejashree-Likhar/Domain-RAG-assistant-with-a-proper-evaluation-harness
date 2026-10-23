@@ -68,6 +68,13 @@ EXAMPLES = {
 }
 
 
+REFUSAL_TEXT = {
+    "model_not_found": "The documentation doesn't appear to cover this, so the assistant won't guess.",
+    "retrieval_gate": "The closest passages scored too low to answer from, so the assistant won't guess.",
+    "no_overlap": "Nothing in the retrieved passages matches the question, so the assistant won't guess.",
+}
+
+
 def ensure_corpus():
     if not list((ROOT / "data" / "raw").glob("*.rst")):
         subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_corpus.py")], check=True)
@@ -163,14 +170,22 @@ if go and question.strip():
             with st.expander("Technical details"):
                 st.code(str(e)[:800])
             st.stop()
-    (st.warning if r["refused"] else st.success)(r["answer"])
-    if r["refused"]:
-        st.caption(f"Refused: {r['refusal_reason']}. The assistant won't answer from outside the documentation.")
+    refused = r["refused"]
+    (st.warning if refused else st.success)(r["answer"])
+    if refused:
+        st.caption(REFUSAL_TEXT.get(r["refusal_reason"], "The assistant won't answer from outside the documentation."))
     lat = r["latency_ms"]
     st.caption(f"retrieve {lat['retrieve_ms']:.0f} ms · rerank {lat['rerank_ms']:.0f} ms · "
                f"generate {lat['generate_ms']:.0f} ms · total {lat['total_ms']:.0f} ms")
-    st.subheader("Sources")
-    st.caption("The five passages retrieved. ✅ marks the ones the answer cites. Check that they really support the claim.")
-    for i, c in enumerate(r["citations"], 1):
-        with st.expander(f"[{i}] {c['section']}  ·  score {c['score']:.2f}" + ("  ✅ cited" if c["cited"] else "")):
-            st.text(c["text"])
+    if refused:
+        with st.expander("Closest passages found (not used for an answer)"):
+            for i, c in enumerate(r["citations"], 1):
+                st.markdown(f"**[{i}] {c['section']}** · score {c['score']:.2f}")
+                st.text(c["text"])
+    else:
+        st.subheader("Sources")
+        st.caption(f"The {len(r['citations'])} passages retrieved. ✅ marks the ones the answer cites. "
+                   "Check that they really support the claim.")
+        for i, c in enumerate(r["citations"], 1):
+            with st.expander(f"[{i}] {c['section']}  ·  score {c['score']:.2f}" + ("  ✅ cited" if c["cited"] else "")):
+                st.text(c["text"])
