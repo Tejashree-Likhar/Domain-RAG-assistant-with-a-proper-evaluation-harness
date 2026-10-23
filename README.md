@@ -111,7 +111,7 @@ Pooling dev and test (no tuning is involved without the gate), the LLM refused 1
 - **Citation metrics are strict.** A cited chunk counts as wrong unless it contains the gold phrase, so a different passage that also supports the answer is penalised. It has not been measured how often the model omits citations altogether.
 - **Key-fact recall is a substring match,** so correct paraphrases can be missed and lucky matches counted.
 - **Config mismatch.** The ablation covers 150/300/500-token chunks; the end-to-end run used 400 tokens.
-- **Latency is only meaningful in the ablation table.** End-to-end run latencies include a deliberate request throttle and cached LLM replies. The heavier `bge-reranker-base` was far too slow on the CPU used (roughly 15-20 minutes per reranked configuration), which is why the sweep uses MiniLM-L6.
+- **Latency is only meaningful in the ablation table.** End-to-end run latencies include a deliberate request throttle and cached LLM replies. The heavier `bge-reranker-base` was far too slow on the CPU used (roughly 15-20 minutes per reranked configuration), which is why the sweep uses MiniLM-L6. The hosted demo runs on a shared free-tier CPU and is slower (about 3 s per question observed, mostly reranking).
 - **Single corpus and domain.** 21 pages of one library's documentation.
 
 ## Reproduce (Windows PowerShell; use `export` instead of `$env:` on macOS/Linux)
