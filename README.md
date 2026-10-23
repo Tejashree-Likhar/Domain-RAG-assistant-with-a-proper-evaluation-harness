@@ -2,8 +2,6 @@
 
 A question-answering assistant over 21 pages of the **scikit-learn 1.5.2 user guide**, built around the part most RAG demos skip: measuring it. Retrieval is scored with Recall@k and MRR, answers with key-fact recall and citation checks, and the system is tested on questions its documents *cannot* answer.
 
-**Live demo:** https://domain-rag-assistant-with-a-proper-evaluation-harness-qyycvk2e.streamlit.app/ (rate-limited, runs on free tiers, may sleep. Questions are processed by a third-party LLM API, Gemini free tier.)
-
 ## About
 
 Most "chat with your documents" projects stop at a demo. This one is built to be measured. It answers scikit-learn questions using only 21 pages of the official user guide, cites the passages it used, and is expected to say "not found" when the documentation doesn't contain the answer.
