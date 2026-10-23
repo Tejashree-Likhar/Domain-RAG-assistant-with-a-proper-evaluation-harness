@@ -2,7 +2,7 @@
 
 A question-answering assistant over 21 pages of the **scikit-learn 1.5.2 user guide**, built around the part most RAG demos skip: measuring it. Retrieval is scored with Recall@k and MRR, answers with key-fact recall and citation checks, and the system is tested on questions its documents *cannot* answer.
 
-**Live demo:** `<add your Streamlit URL here after deploying>` (rate-limited, runs on free tiers, may sleep. Questions are processed by a third-party LLM API, Gemini free tier.)
+**Live demo:** https://domain-rag-assistant-with-a-proper-evaluation-harness-qyycvk2e.streamlit.app/ (rate-limited, runs on free tiers, may sleep. Questions are processed by a third-party LLM API, Gemini free tier.)
 
 ## About
 
@@ -18,7 +18,7 @@ Retrieval combines BGE embeddings (FAISS) with BM25 and a cross-encoder reranker
 
 ## Headline results
 
-All numbers are on 76 hand-written questions (62 answerable, 14 unanswerable); details and caveats below.
+All numbers are on 76 questions (62 answerable, 14 unanswerable); details and caveats below.
 
 - **Reranking helped every retrieval configuration.** MRR@10 rose in all 9 matched pairs (chunk size x retrieval mode), e.g. 0.757 to 0.842 for dense retrieval at 150-token chunks. Cost: roughly 1.0-1.6 s per query on CPU versus about 15-80 ms without it.
 - **Once you rerank, the retrieval mode barely matters.** At 150 tokens, dense, BM25 and hybrid are identical (MRR 0.842).
@@ -146,6 +146,7 @@ Run the app locally: copy `.streamlit/secrets.toml.example` to `.streamlit/secre
 ## Repo layout
 
 ```
+docs/          screenshots used in this README
 src/ragkit/    ingest, chunking, retrieval, rerankers, generation, pipeline, FastAPI service
 eval/          questions, metrics, ablations, refusal analysis, end-to-end runner, judge, validators
 app/           Streamlit demo
@@ -155,4 +156,4 @@ tests/         18 tests (chunking, metrics, leakage guard, API, OpenAI-compatibl
 
 ## Licensing
 
-Corpus: scikit-learn 1.5.2 user guide, BSD-3-Clause. The text is **not committed**; `scripts/fetch_corpus.py` downloads it and saves the licence next to it. If you redistribute chunks or built indexes, include `data/raw/LICENSE-scikit-learn.txt`. Code in this repository is yours to license; add a `LICENSE` file.
+Corpus: scikit-learn 1.5.2 user guide, BSD-3-Clause. The text is **not committed**; `scripts/fetch_corpus.py` downloads it and saves the licence next to it. If you redistribute chunks or built indexes, include `data/raw/LICENSE-scikit-learn.txt`. The code in this repository is released under the MIT licence (see `LICENSE`).
