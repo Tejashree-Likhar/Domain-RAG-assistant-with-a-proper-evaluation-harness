@@ -10,6 +10,12 @@ Most "chat with your documents" projects stop at a demo. This one is built to be
 
 Retrieval combines BGE embeddings (FAISS) with BM25 and a cross-encoder reranker; an LLM then writes a cited answer from the top five passages. The evaluation harness scores retrieval (Recall@k, MRR, with ablations over chunk size, reranking and hybrid search), answer quality (key facts and citations) and refusal behaviour on 14 unanswerable questions, with a dev/test split and a leakage guard.
 
+## Screenshots
+
+| An answered question, with cited sources | A refusal on a question the docs can't answer |
+|---|---|
+| ![Answer](docs/answer.png) | ![Refusal](docs/refusal.png) |
+
 ## Headline results
 
 All numbers are on 76 hand-written questions (62 answerable, 14 unanswerable); details and caveats below.
